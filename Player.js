@@ -10,6 +10,7 @@ Player = (function() {
     this.h = height * h / 60;
     this.history = [3];
     this.target = 2;
+    this.count = 0;
     this.buttons = [];
     this.buttons.push(new Button(this, 5, 10, 20, 10, "", "3"));
     this.buttons.push(new Button(this, 35, 10, 20, 10, "", "2"));
@@ -32,11 +33,6 @@ Player = (function() {
       results.push(button.draw());
     }
     return results;
-  };
-
-  Player.prototype.createProblem = function() {
-    this.history = [3];
-    return this.target = 2;
   };
 
   Player.prototype.mousePressed = function() {
@@ -77,11 +73,30 @@ Player = (function() {
   };
 
   Player.prototype.save = function(value) {
-    return this.history.push(value);
+    var d, ms;
+    this.count++;
+    this.history.push(value);
+    if (this.target === this.top()) {
+      d = new Date();
+      ms = d.getTime();
+      return this.stopp = ms;
+    }
+  };
+
+  Player.prototype.score = function() {
+    return (this.stopp - this.start) / 1000 + this.count * 10;
   };
 
   Player.prototype.top = function() {
     return this.history[this.history.length - 1];
+  };
+
+  Player.prototype.finished = function() {
+    return this.top() === this.target;
+  };
+
+  Player.prototype.perfect = function(level) {
+    return this.finished() && this.count <= level;
   };
 
   return Player;

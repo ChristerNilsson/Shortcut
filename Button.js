@@ -18,11 +18,12 @@ Button = (function() {
     fill(255);
     rect(this.x, this.y, this.w - 1, this.h - 1);
     fill(0);
+    textSize(this.h / 2);
     return text(this.txt, this.x + this.w / 2, this.y + this.h / 2);
   };
 
   Button.prototype.mousePressed = function() {
-    if ((this.x <= mouseX && mouseX <= this.x + this.w) && mouseY >= this.y && mouseY <= this.y + this.h) {
+    if ((this.x <= mouseX && mouseX <= this.x + this.w) && (this.y <= mouseY && mouseY <= this.y + this.h)) {
       return this.parent.process(this.key);
     }
   };
