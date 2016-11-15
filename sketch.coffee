@@ -1,24 +1,20 @@
 players = []
 
-setup = () ->
-  createCanvas(600,600)
-  textAlign(CENTER,CENTER)
-  textSize(30)
-  players.push(new Player("WASD",0,0,30,60))
-  players.push(new Player("&%('",30,0,30,60))
+setup = ->
+  createCanvas windowWidth, windowHeight
+  textAlign CENTER,CENTER
+  textSize 30
+  players.push new Player "WASD",0,0, 30,60
+  players.push new Player "&%('",30,0, 30,60
 
-
-draw = () ->
+draw = ->
   for player in players
   	player.draw()
 
-
-mousePressed = () ->
+mousePressed = ->
   for player in players
-  	player.mousePressed()
+    player.mousePressed()
 
-
-keyPressed = () ->
+keyPressed = ->
   for player in players
   	player.keyPressed(key)
-
