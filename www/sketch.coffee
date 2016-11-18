@@ -48,7 +48,22 @@ class Game
 
 	result : ->
 		fill 127
-		rect 0,0,width*0.9,height*0.9
+		rect 0,0,width,height
+
+		if @players[0].stopp == 0
+			@players[0].color = color(127)
+		else if @players[0].score() < @players[1].score() or @players[1].stopp == 0  
+			@players[0].color = color(0,255,0)
+		else
+			@players[0].color = color(255,0,0)
+
+		if @players[1].stopp == 0
+			@players[1].color = color(127)
+		else if @players[1].score() < @players[0].score() or @players[0].stopp == 0  
+			@players[1].color = color(0,255,0)
+		else
+			@players[1].color = color(255,0,0)
+
 		for player in @players
 			player.result()
 
@@ -102,6 +117,11 @@ draw = ->
 
 	g.display.draw()	
 	g.pop()
+
+touchStarted = ->
+	for player in g.players
+		player.touchStarted()
+	g.display.touchStarted()
 
 mousePressed = ->
 	for player in g.players

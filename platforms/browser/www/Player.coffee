@@ -40,6 +40,10 @@ class Player
 		for button in @buttons 
 			button.mousePressed()
 
+	touchStarted : ->
+		for button in @buttons 
+			button.touchStarted()
+
 	keyPressed : (key) ->
 		for button in @buttons
 			button.keyPressed key
@@ -72,10 +76,10 @@ class Player
 
 	perfect : (level) -> @finished() and @count <= level
 
-	result : ->
+	result :() ->
 		if @stopp == 0
 			return
-		fill 0
+		fill @color
 		H = 40
 		textSize H
 		for number,i in @history

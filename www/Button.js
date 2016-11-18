@@ -31,8 +31,18 @@ Button = (function() {
 
   Button.prototype.mousePressed = function() {
     if ((this.x0 - this.w0 / 2 <= mouseX && mouseX <= this.x0 + this.w0 / 2) && (this.y0 - this.h0 / 2 <= mouseY && mouseY <= this.y0 + this.h0 / 2)) {
-      return this.parent.process(this.key);
+      this.parent.process(this.key);
     }
+    return false;
+  };
+
+  Button.prototype.touchStarted = function() {
+    var ref, ref1, touch;
+    touch = touches[touches.length - 1];
+    if ((this.x0 - this.w0 / 2 <= (ref = touch.x) && ref <= this.x0 + this.w0 / 2) && (this.y0 - this.h0 / 2 <= (ref1 = touch.y) && ref1 <= this.y0 + this.h0 / 2)) {
+      this.parent.process(this.key);
+    }
+    return false;
   };
 
   Button.prototype.keyPressed = function(key) {

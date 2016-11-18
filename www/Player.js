@@ -60,6 +60,17 @@ Player = (function() {
     return results;
   };
 
+  Player.prototype.touchStarted = function() {
+    var button, j, len, ref, results;
+    ref = this.buttons;
+    results = [];
+    for (j = 0, len = ref.length; j < len; j++) {
+      button = ref[j];
+      results.push(button.touchStarted());
+    }
+    return results;
+  };
+
   Player.prototype.keyPressed = function(key) {
     var button, j, len, ref, results;
     ref = this.buttons;
@@ -121,7 +132,7 @@ Player = (function() {
     if (this.stopp === 0) {
       return;
     }
-    fill(0);
+    fill(this.color);
     H = 40;
     textSize(H);
     ref = this.history;
