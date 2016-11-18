@@ -14,8 +14,6 @@ class Game
 		@players.push new Player "WASD",30,30, 60,60
 		@players.push new Player "&%('",90,30, 60,60
 		@display = new Button @, 0, 0, 15, 10, "",""
-
-		@createProblem()		
 	push : ->
 		@stack.push [@x,@y,@a,@s]
 		push()
@@ -51,18 +49,18 @@ class Game
 		rect 0,0,width,height
 
 		if @players[0].stopp == 0
-			@players[0].color = color(127)
+			@players[0].color = color 127
 		else if @players[0].score() < @players[1].score() or @players[1].stopp == 0  
-			@players[0].color = color(0,255,0)
+			@players[0].color = color 0,255,0
 		else
-			@players[0].color = color(255,0,0)
+			@players[0].color = color 255,0,0
 
 		if @players[1].stopp == 0
-			@players[1].color = color(127)
+			@players[1].color = color 127
 		else if @players[1].score() < @players[0].score() or @players[0].stopp == 0  
-			@players[1].color = color(0,255,0)
+			@players[1].color = color 0,255,0
 		else
-			@players[1].color = color(255,0,0)
+			@players[1].color = color 255,0,0
 
 		for player in @players
 			player.result()
@@ -73,7 +71,7 @@ class Game
 		fill 0
 		H = 40
 		textSize H
-		solution = solve(@players[0].history[1],@players[0].target)
+		solution = solve @players[0].history[1], @players[0].target
 		solution.unshift ""
 
 		for number,i in solution
@@ -84,11 +82,14 @@ class Game
 			text number,x0+x*100,-(height-H)*0.9*0.5 + y*H		
 
 	createProblem : ->
-		target = a = 1 + int(random(20))
+		target = a = 1 + int random 20
 		lst = [a]
+		count = 0
 		while lst.length-1 < @level
+			return @createProblem() if count > 1000
+			count++
 			b = 0
-			switch int(random(3))
+			switch int random 3
 				when 0
 					b = a - 2
 				when 1
@@ -97,7 +98,7 @@ class Game
 					b = a / 2 if a%2==0
 			if b > 0 and b not in lst
 				a = b
-				lst.push(b)
+				lst.push b
 
 		d = new Date()
 		ms = int d.getTime()
@@ -110,9 +111,11 @@ class Game
 
 setup = ->
 	createCanvas windowWidth, windowHeight
+	frameRate 15
 	textAlign CENTER,CENTER
 	rectMode CENTER
 	g = new Game()
+	g.createProblem()		
 
 draw = ->
 	g.push()
@@ -143,11 +146,12 @@ mousePressed = ->
 	for player in g.players
 		player.mousePressed()
 	g.display.mousePressed()
+	draw()
 
 keyPressed = ->
 	for player in g.players
-		player.keyPressed(key)
-	if key==' ' 
+		player.keyPressed key
+	if key == ' ' 
 		autolevel()
 		g.createProblem()
 
@@ -157,10 +161,8 @@ autolevel = ->
 	for player in g.players
 		if player.finished()
 			finished++
-		if player.perfect(g.level)
+		if player.perfect g.level
 			perfect++	
-#	if finished == 0 
-#		return
 	if perfect > 0
 		g.level++
 	else 

@@ -20,7 +20,6 @@ Game = (function() {
     this.players.push(new Player("WASD", 30, 30, 60, 60));
     this.players.push(new Player("&%('", 90, 30, 60, 60));
     this.display = new Button(this, 0, 0, 15, 10, "", "");
-    this.createProblem();
   }
 
   Game.prototype.push = function() {
@@ -120,10 +119,15 @@ Game = (function() {
   };
 
   Game.prototype.createProblem = function() {
-    var a, b, d, j, len, lst, ms, player, ref, results, target;
+    var a, b, count, d, j, len, lst, ms, player, ref, results, target;
     target = a = 1 + int(random(20));
     lst = [a];
+    count = 0;
     while (lst.length - 1 < this.level) {
+      if (count > 1000) {
+        return this.createProblem();
+      }
+      count++;
       b = 0;
       switch (int(random(3))) {
         case 0:
@@ -163,9 +167,11 @@ Game = (function() {
 
 setup = function() {
   createCanvas(windowWidth, windowHeight);
+  frameRate(15);
   textAlign(CENTER, CENTER);
   rectMode(CENTER);
-  return g = new Game();
+  g = new Game();
+  return g.createProblem();
 };
 
 draw = function() {
@@ -211,7 +217,8 @@ mousePressed = function() {
     player = ref[j];
     player.mousePressed();
   }
-  return g.display.mousePressed();
+  g.display.mousePressed();
+  return draw();
 };
 
 keyPressed = function() {
