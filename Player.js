@@ -3,55 +3,61 @@ var Player;
 
 Player = (function() {
   function Player(keys, x, y, w, h) {
+    this.w = w;
+    this.h = h;
+    this.M = 120;
+    this.N = 60;
     this.keys = keys;
-    this.x = width * x / 60;
-    this.y = height * y / 60;
-    this.w = width * w / 60;
-    this.h = height * h / 60;
+    this.x = width * x / this.M;
+    this.y = height * y / this.N;
     this.history = [3];
     this.target = 2;
     this.count = 0;
     this.buttons = [];
-    this.buttons.push(new Button(this, 5, 10, 20, 10, "", "3"));
-    this.buttons.push(new Button(this, 35, 10, 20, 10, "", "2"));
-    this.buttons.push(new Button(this, 20, 30, 20, 10, keys[0], "undo"));
-    this.buttons.push(new Button(this, 0, 45, 20, 10, keys[1], "+2"));
-    this.buttons.push(new Button(this, 20, 45, 20, 10, keys[2], "*2"));
-    this.buttons.push(new Button(this, 40, 45, 20, 10, keys[3], "/2"));
+    this.buttons.push(new Button(this, -5, -10, 7.5, 15, "", "3"));
+    this.buttons.push(new Button(this, -5, 10, 7.5, 15, "", "2"));
+    this.buttons.push(new Button(this, -5, 0, 7.5, 15, keys[0], "undo"));
+    this.buttons.push(new Button(this, 15, -10, 7.5, 15, keys[1], "/2"));
+    this.buttons.push(new Button(this, 15, 0, 7.5, 15, keys[2], "+2"));
+    this.buttons.push(new Button(this, 15, 10, 7.5, 15, keys[3], "*2"));
   }
 
   Player.prototype.draw = function() {
-    var button, i, len, ref, results;
-    fill(255);
-    rect(this.x, this.y, this.w - 1, this.h - 1);
+    var button, j, len, ref, results;
+    if (this.keys === "WASD") {
+      fill(255, 0, 0, 127);
+    } else {
+      fill(255, 255, 0, 127);
+    }
+    rect(0, 0, height * this.h / this.N, width * this.w / this.M);
     this.buttons[0].txt = this.top().toString();
     this.buttons[1].txt = this.target.toString();
     ref = this.buttons;
     results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      button = ref[i];
+    for (j = 0, len = ref.length; j < len; j++) {
+      button = ref[j];
       results.push(button.draw());
     }
     return results;
   };
 
   Player.prototype.mousePressed = function() {
-    var button, i, len, ref, results;
+    var button, j, len, ref, results;
     ref = this.buttons;
     results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      button = ref[i];
+    for (j = 0, len = ref.length; j < len; j++) {
+      button = ref[j];
       results.push(button.mousePressed());
     }
     return results;
   };
 
   Player.prototype.keyPressed = function(key) {
-    var button, i, len, ref, results;
+    var button, j, len, ref, results;
     ref = this.buttons;
     results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      button = ref[i];
+    for (j = 0, len = ref.length; j < len; j++) {
+      button = ref[j];
       results.push(button.keyPressed(key));
     }
     return results;
@@ -61,14 +67,14 @@ Player = (function() {
     if (key === this.keys[0] && this.history.length > 1) {
       this.history.pop();
     }
-    if (key === this.keys[1]) {
-      this.save(this.top() + 2);
+    if (key === this.keys[1] && this.top() % 2 === 0) {
+      this.save(this.top() / 2);
     }
     if (key === this.keys[2]) {
-      this.save(this.top() * 2);
+      this.save(this.top() + 2);
     }
-    if (key === this.keys[3] && this.top() % 2 === 0) {
-      return this.save(this.top() / 2);
+    if (key === this.keys[3]) {
+      return this.save(this.top() * 2);
     }
   };
 
@@ -97,6 +103,27 @@ Player = (function() {
 
   Player.prototype.perfect = function(level) {
     return this.finished() && this.count <= level;
+  };
+
+  Player.prototype.result = function() {
+    var i, j, len, number, ref, results, x, x0, y;
+    console.log("player.result " + this.history);
+    fill(0);
+    textSize(40);
+    ref = this.history;
+    results = [];
+    for (i = j = 0, len = ref.length; j < len; i = ++j) {
+      number = ref[i];
+      if (this.keys === "WASD") {
+        x0 = 150 - width / 2;
+      } else {
+        x0 = 150;
+      }
+      x = int(i / 16);
+      y = i % 16;
+      results.push(text(number, x0 + x * 100, -height * 0.4 + y * 40));
+    }
+    return results;
   };
 
   return Player;

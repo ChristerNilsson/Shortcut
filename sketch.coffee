@@ -2,15 +2,51 @@
 # coffee -b -o . -cw .
 # Sublime: Ctrl+Shift+p Install Package Better CoffeeScript
 
-game = 0
+g = 0
 
 class Game
-	constructor : ->
+	constructor : (@x=0, @y=0, @a=0, @s=1, @stack=[]) ->
 		@players = []
 		@level = 1
-		@players.push new Player "WASD",0,0, 30,60
-		@players.push new Player "&%('",30,0, 30,60
-		@createProblem()
+		w=width
+		h=height   
+		@mode = 0                                                     
+		@players.push new Player "WASD",30,30, 60,60
+		@players.push new Player "&%('",90,30, 60,60
+		@display = new Button @, 0, 0, 15, 10, "",""
+
+		@createProblem()		
+	push : ->
+		@stack.push [@x,@y,@a,@s]
+		push()
+	pop : ->
+		[@x,@y,@a,@s] = @stack.pop()
+		pop()
+	rotate : (d) ->
+		rotate radians d
+		@a += d
+	scale : (ds) ->
+		scale ds
+		@s *= ds
+	translate : (dx,dy) ->
+		v = radians @a
+		@x += @s * dx * cos(v) - @s * dy * sin(v)
+		@y += @s * dy * cos(v) + @s * dx * sin(v)
+		translate dx,dy
+	dump : (txt) ->
+		console.log [txt, @x,@y]
+
+	process : ->
+		console.log("process")		
+		@mode = 1 - @mode
+		if @mode == 0
+			@createProblem()
+
+	result : ->
+		fill 127
+		rect 0,0,width-50,height-50
+		for player in @players
+			player.result()
 
 	createProblem : ->
 		target = a = 1 + int(random(20))
@@ -38,36 +74,55 @@ class Game
 
 setup = ->
 	createCanvas windowWidth, windowHeight
-	console.log("a")
-	game = new Game()
 	textAlign CENTER,CENTER
+	rectMode CENTER
+	g = new Game()
 
 draw = ->
-	for player in game.players
+	g.push()
+	g.translate width/2, height/2	
+
+	for player,i in g.players
+		g.push()
+		if i==0
+			g.translate -width/4, 0
+			g.rotate 90
+		if i==1
+			g.translate width/4, 0
+			g.rotate -90
 		player.draw()
+		g.pop()
+  if g.mode==1
+  	g.result()
+
+	g.display.draw()	
+	g.pop()
+
 
 mousePressed = ->
-	for player in game.players
+	for player in g.players
 		player.mousePressed()
+	g.display.mousePressed()
 
 keyPressed = ->
 	finished = 0
 	perfect = 0
-	for player in game.players
+	for player in g.players
 		if player.finished()
 			finished++
-		if player.perfect(game.level)
+		if player.perfect(g.level)
 			perfect++	
 		player.keyPressed(key)
 	if key==' ' && finished > 0
 		if perfect > 0
-			game.level++
+			g.level++
 		else 
-			game.level--
-		if game.level == 0
-			game.level = 1
+			g.level--
+		if g.level == 0
+			g.level = 1
 		s=""
-		for player in game.players
+		for player in g.players
 			s = s + player.score() + "  "	
 		alert s
-		game.createProblem()
+		g.createProblem()
+
