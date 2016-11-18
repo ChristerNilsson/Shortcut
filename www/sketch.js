@@ -5,10 +5,10 @@ var Game, autolevel, draw, g, keyPressed, mousePressed, setup, touchStarted,
 g = 0;
 
 Game = (function() {
-  function Game(x, y, a1, s, stack) {
+  function Game(x1, y1, a1, s, stack) {
     var h, w;
-    this.x = x != null ? x : 0;
-    this.y = y != null ? y : 0;
+    this.x = x1 != null ? x1 : 0;
+    this.y = y1 != null ? y1 : 0;
     this.a = a1 != null ? a1 : 0;
     this.s = s != null ? s : 1;
     this.stack = stack != null ? stack : [];
@@ -75,7 +75,7 @@ Game = (function() {
   };
 
   Game.prototype.result = function() {
-    var j, len, player, ref, results;
+    var j, len, player, ref;
     fill(127);
     rect(0, 0, width, height);
     if (this.players[0].stopp === 0) {
@@ -93,10 +93,28 @@ Game = (function() {
       this.players[1].color = color(255, 0, 0);
     }
     ref = this.players;
-    results = [];
     for (j = 0, len = ref.length; j < len; j++) {
       player = ref[j];
-      results.push(player.result());
+      player.result();
+    }
+    return this.solve_result();
+  };
+
+  Game.prototype.solve_result = function() {
+    var H, i, j, len, n, number, results, solution, x, x0, y;
+    fill(0);
+    H = 40;
+    textSize(H);
+    solution = solve(this.players[0].history[1], this.players[0].target);
+    solution.unshift("");
+    results = [];
+    for (i = j = 0, len = solution.length; j < len; i = ++j) {
+      number = solution[i];
+      x0 = 0;
+      n = (height - H) * 0.9 / H;
+      x = int(i / n);
+      y = int(i % n);
+      results.push(text(number, x0 + x * 100, -(height - H) * 0.9 * 0.5 + y * H));
     }
     return results;
   };

@@ -21,7 +21,7 @@ Button = (function() {
     this.y0 = g.y;
     this.w0 = g.s * width * this.w / 60 - 2;
     this.h0 = g.s * height * this.h / 60 - 2;
-    fill(255);
+    fill(255, 127);
     rect(0, 0, height * this.h / 60 - 2, width * this.w / 60 - 2);
     fill(0);
     textSize(this.h0 / 3);

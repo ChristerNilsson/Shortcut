@@ -13,7 +13,7 @@ class Button
 		@w0 = g.s*width*(@w)/60-2
 		@h0 = g.s*height*(@h)/60-2
 
-		fill 255
+		fill 255,127
 		rect 0, 0, height*(@h)/60-2,  width*(@w)/60-2
 
 		fill 0

@@ -67,6 +67,22 @@ class Game
 		for player in @players
 			player.result()
 
+		@solve_result()	
+
+	solve_result : ->
+		fill 0
+		H = 40
+		textSize H
+		solution = solve(@players[0].history[1],@players[0].target)
+		solution.unshift ""
+
+		for number,i in solution
+			x0 = 0
+			n = (height-H)*0.9 / H
+			x = int i / n
+			y = int i % n
+			text number,x0+x*100,-(height-H)*0.9*0.5 + y*H		
+
 	createProblem : ->
 		target = a = 1 + int(random(20))
 		lst = [a]
