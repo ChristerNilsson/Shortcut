@@ -1,14 +1,10 @@
-# A Blank PhoneGap App
+# Shortcut
+
+A simple mathematical two person game.
+The object is to make the left number equal the right.
+Every operation costs twn seconds.
 
 ## Usage
 
-### PhoneGap CLI
-
-    $ phonegap create my-app --template blank
-
-### Desktop
-
-In your browser, open the file:
-
-    /www/index.html
-
+Not available as an app yet.
+You may try the link above.
