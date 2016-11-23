@@ -26,9 +26,9 @@ class Button
 			@parent.process @key
 		false
 
-	touchStarted : ->
-		touch = touches[touches.length-1]
-		if @x0-@w0/2 <= touch.x <= @x0+@w0/2 and @y0-@h0/2 <= touch.y <= @y0+@h0/2 
+	touchStarted : (x,y) ->
+		#touch = touches[touches.length-1]
+		if @x0-@w0/2 <= x <= @x0+@w0/2 and @y0-@h0/2 <= y <= @y0+@h0/2 
 			@parent.process @key
 		false
 

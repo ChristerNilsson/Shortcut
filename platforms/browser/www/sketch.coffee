@@ -3,6 +3,7 @@
 # Sublime: Ctrl+Shift+p Install Package Better CoffeeScript
 
 g = 0
+ids = {}
 
 class Game
 	constructor : (@x=0, @y=0, @a=0, @s=1, @stack=[]) ->
@@ -35,7 +36,6 @@ class Game
 		console.log [txt, @x,@y]
 
 	process : ->
-		console.log("process")		
 		@mode = 1 - @mode
 		if @mode == 0
 			autolevel()
@@ -82,7 +82,7 @@ class Game
 			text number,x0+x*100,-(height-H)*0.9*0.5 + y*H		
 
 	createProblem : ->
-		n = int Math.pow 2, 3+@level/3 # nodes
+		n = int Math.pow 2, 4+@level/3 # nodes
 		a = int random 1,n/2
 		lst = [a]
 		tree = [a]
@@ -99,7 +99,7 @@ class Game
 				save item*2
 				save item/2
 			lst = lst2
-		i = int(random(0,lst.length))
+		i = int random 0,lst.length
 		b = lst[i]
 
 		d = new Date()
@@ -110,6 +110,7 @@ class Game
 			player.count = 0
 			player.start = ms 
 			player.stopp = 0
+			player.level = @level
 
 setup = ->
 	createCanvas windowWidth, windowHeight
@@ -139,10 +140,16 @@ draw = ->
 	g.display.draw()	
 	g.pop()
 
-touchStarted = ->
-	for player in g.players
-		player.touchStarted()
-	g.display.touchStarted()
+
+touchStarted = -> 
+	for touch in touches
+		if touch.id not of ids 
+			ids[touch.id] = touch
+			for player in g.players
+				player.touchStarted(touch.x,touch.y)
+	if touch.length == 0
+		ids = {}
+	g.display.touchStarted(touch.x,touch.y)
 
 mousePressed = ->
 	for player in g.players
@@ -171,3 +178,4 @@ autolevel = ->
 		g.level--
 	if g.level == 0
 		g.level = 1
+	console.log("autolevel #{g.level}")		

@@ -44,9 +44,9 @@ class Player
 		for button in @buttons 
 			button.mousePressed()
 
-	touchStarted : ->
+	touchStarted : (x,y) ->
 		for button in @buttons 
-			button.touchStarted()
+			button.touchStarted(x,y)
 
 	keyPressed : (key) ->
 		for button in @buttons

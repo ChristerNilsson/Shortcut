@@ -3,6 +3,7 @@
 # Sublime: Ctrl+Shift+p Install Package Better CoffeeScript
 
 g = 0
+ids = {}
 
 class Game
 	constructor : (@x=0, @y=0, @a=0, @s=1, @stack=[]) ->
@@ -139,10 +140,16 @@ draw = ->
 	g.display.draw()	
 	g.pop()
 
-touchStarted = ->
-	for player in g.players
-		player.touchStarted()
-	g.display.touchStarted()
+
+touchStarted = -> 
+	for touch in touches
+		if touch.id not of ids 
+			ids[touch.id] = touch
+			for player in g.players
+				player.touchStarted(touch.x,touch.y)
+	if touch.length == 0
+		ids = {}
+	g.display.touchStarted(touch.x,touch.y)
 
 mousePressed = ->
 	for player in g.players
