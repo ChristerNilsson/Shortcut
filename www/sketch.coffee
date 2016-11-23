@@ -35,7 +35,6 @@ class Game
 		console.log [txt, @x,@y]
 
 	process : ->
-		console.log("process")		
 		@mode = 1 - @mode
 		if @mode == 0
 			autolevel()
@@ -99,7 +98,7 @@ class Game
 				save item*2
 				save item/2
 			lst = lst2
-		i = int(random(0,lst.length))
+		i = int random 0,lst.length
 		b = lst[i]
 
 		d = new Date()
@@ -110,6 +109,7 @@ class Game
 			player.count = 0
 			player.start = ms 
 			player.stopp = 0
+			player.level = @level
 
 setup = ->
 	createCanvas windowWidth, windowHeight
@@ -171,3 +171,4 @@ autolevel = ->
 		g.level--
 	if g.level == 0
 		g.level = 1
+	console.log("autolevel #{g.level}")		

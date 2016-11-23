@@ -9,6 +9,7 @@ class Player
 		@history = [3]
 		@target = 2
 		@count = 0
+		@level = 0
 
 		@buttons = []              # x   y   w   h (relativt centrum)
 		@buttons.push new Button @,-5,-10, 7.5, 15, "","3"
@@ -35,6 +36,9 @@ class Player
 		@buttons[1].txt = @target.toString()
 		for button in @buttons
 			button.draw()
+		textSize 80
+		fill 127
+		text @level - @history.length + 1, 0,-height/3
 
 	mousePressed : ->
 		for button in @buttons 

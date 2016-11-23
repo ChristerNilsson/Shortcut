@@ -56,7 +56,7 @@ Game = (function() {
   };
 
   Game.prototype.process = function() {
-    var j, len, player, ref, results;
+    var k, len, player, ref, results;
     console.log("process");
     this.mode = 1 - this.mode;
     if (this.mode === 0) {
@@ -65,8 +65,8 @@ Game = (function() {
     } else {
       ref = this.players;
       results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        player = ref[j];
+      for (k = 0, len = ref.length; k < len; k++) {
+        player = ref[k];
         results.push(player.history.unshift(player.score()));
       }
       return results;
@@ -74,7 +74,7 @@ Game = (function() {
   };
 
   Game.prototype.result = function() {
-    var j, len, player, ref;
+    var k, len, player, ref;
     fill(127);
     rect(0, 0, width, height);
     if (this.players[0].stopp === 0) {
@@ -92,22 +92,22 @@ Game = (function() {
       this.players[1].color = color(255, 0, 0);
     }
     ref = this.players;
-    for (j = 0, len = ref.length; j < len; j++) {
-      player = ref[j];
+    for (k = 0, len = ref.length; k < len; k++) {
+      player = ref[k];
       player.result();
     }
     return this.solve_result();
   };
 
   Game.prototype.solve_result = function() {
-    var H, i, j, len, n, number, results, solution, x, x0, y;
+    var H, i, k, len, n, number, results, solution, x, x0, y;
     fill(0);
     H = 40;
     textSize(H);
     solution = solve(this.players[0].history[1], this.players[0].target);
     solution.unshift("");
     results = [];
-    for (i = j = 0, len = solution.length; j < len; i = ++j) {
+    for (i = k = 0, len = solution.length; k < len; i = ++k) {
       number = solution[i];
       x0 = 0;
       n = (height - H) * 0.9 / H;
@@ -119,41 +119,40 @@ Game = (function() {
   };
 
   Game.prototype.createProblem = function() {
-    var a, b, count, d, j, len, lst, ms, player, ref, results, target;
-    target = a = 1 + int(random(20));
+    var a, b, d, i, item, j, k, l, len, len1, lst, lst2, m, ms, n, player, ref, ref1, results, save, tree;
+    n = int(Math.pow(2, 3 + this.level / 3));
+    a = int(random(1, n / 2));
     lst = [a];
-    count = 0;
-    while (lst.length - 1 < this.level) {
-      if (count > 1000) {
-        return this.createProblem();
+    tree = [a];
+    lst2 = [];
+    save = function(item) {
+      if (Math.floor(item) === item && item <= n) {
+        if (indexOf.call(tree, item) < 0) {
+          lst2.push(item);
+          return tree.push(item);
+        }
       }
-      count++;
-      b = 0;
-      switch (int(random(3))) {
-        case 0:
-          b = a - 2;
-          break;
-        case 1:
-          b = a * 2;
-          break;
-        case 2:
-          if (a % 2 === 0) {
-            b = a / 2;
-          }
+    };
+    for (j = k = 1, ref = this.level; 1 <= ref ? k <= ref : k >= ref; j = 1 <= ref ? ++k : --k) {
+      lst2 = [];
+      for (l = 0, len = lst.length; l < len; l++) {
+        item = lst[l];
+        save(item + 2);
+        save(item * 2);
+        save(item / 2);
       }
-      if (b > 0 && indexOf.call(lst, b) < 0) {
-        a = b;
-        lst.push(b);
-      }
+      lst = lst2;
     }
+    i = int(random(0, lst.length));
+    b = lst[i];
     d = new Date();
     ms = int(d.getTime());
-    ref = this.players;
+    ref1 = this.players;
     results = [];
-    for (j = 0, len = ref.length; j < len; j++) {
-      player = ref[j];
-      player.history = [lst[lst.length - 1]];
-      player.target = target;
+    for (m = 0, len1 = ref1.length; m < len1; m++) {
+      player = ref1[m];
+      player.history = [a];
+      player.target = b;
       player.count = 0;
       player.start = ms;
       results.push(player.stopp = 0);
@@ -175,11 +174,11 @@ setup = function() {
 };
 
 draw = function() {
-  var i, j, len, player, ref;
+  var i, k, len, player, ref;
   g.push();
   g.translate(width / 2, height / 2);
   ref = g.players;
-  for (i = j = 0, len = ref.length; j < len; i = ++j) {
+  for (i = k = 0, len = ref.length; k < len; i = ++k) {
     player = ref[i];
     g.push();
     if (i === 0) {
@@ -201,20 +200,20 @@ draw = function() {
 };
 
 touchStarted = function() {
-  var j, len, player, ref;
+  var k, len, player, ref;
   ref = g.players;
-  for (j = 0, len = ref.length; j < len; j++) {
-    player = ref[j];
+  for (k = 0, len = ref.length; k < len; k++) {
+    player = ref[k];
     player.touchStarted();
   }
   return g.display.touchStarted();
 };
 
 mousePressed = function() {
-  var j, len, player, ref;
+  var k, len, player, ref;
   ref = g.players;
-  for (j = 0, len = ref.length; j < len; j++) {
-    player = ref[j];
+  for (k = 0, len = ref.length; k < len; k++) {
+    player = ref[k];
     player.mousePressed();
   }
   g.display.mousePressed();
@@ -222,10 +221,10 @@ mousePressed = function() {
 };
 
 keyPressed = function() {
-  var j, len, player, ref;
+  var k, len, player, ref;
   ref = g.players;
-  for (j = 0, len = ref.length; j < len; j++) {
-    player = ref[j];
+  for (k = 0, len = ref.length; k < len; k++) {
+    player = ref[k];
     player.keyPressed(key);
   }
   if (key === ' ') {
@@ -235,12 +234,12 @@ keyPressed = function() {
 };
 
 autolevel = function() {
-  var finished, j, len, perfect, player, ref;
+  var finished, k, len, perfect, player, ref;
   finished = 0;
   perfect = 0;
   ref = g.players;
-  for (j = 0, len = ref.length; j < len; j++) {
-    player = ref[j];
+  for (k = 0, len = ref.length; k < len; k++) {
+    player = ref[k];
     if (player.finished()) {
       finished++;
     }

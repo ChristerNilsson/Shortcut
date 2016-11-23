@@ -82,29 +82,31 @@ class Game
 			text number,x0+x*100,-(height-H)*0.9*0.5 + y*H		
 
 	createProblem : ->
-		target = a = 1 + int random 20
+		n = int Math.pow 2, 3+@level/3 # nodes
+		a = int random 1,n/2
 		lst = [a]
-		count = 0
-		while lst.length-1 < @level
-			return @createProblem() if count > 1000
-			count++
-			b = 0
-			switch int random 3
-				when 0
-					b = a - 2
-				when 1
-					b = a * 2
-				when 2
-					b = a / 2 if a%2==0
-			if b > 0 and b not in lst
-				a = b
-				lst.push b
+		tree = [a]
+		lst2 = []
+		save = (item) ->
+			if Math.floor(item) == item and item <= n
+				if item not in tree
+					lst2.push item
+					tree.push item
+		for j in [1..@level]
+			lst2 = []
+			for item in lst
+				save item+2 
+				save item*2
+				save item/2
+			lst = lst2
+		i = int(random(0,lst.length))
+		b = lst[i]
 
 		d = new Date()
 		ms = int d.getTime()
 		for player in @players
-			player.history = [lst[lst.length-1]]
-			player.target = target
+			player.history = [a]
+			player.target = b
 			player.count = 0
 			player.start = ms 
 			player.stopp = 0
