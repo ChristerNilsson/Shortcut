@@ -81,7 +81,7 @@ class Game
 			text number,x0+x*100,-(height-H)*0.9*0.5 + y*H		
 
 	createProblem : ->
-		n = int Math.pow 2, 3+@level/3 # nodes
+		n = int Math.pow 2, 4+@level/3 # nodes
 		a = int random 1,n/2
 		lst = [a]
 		tree = [a]
