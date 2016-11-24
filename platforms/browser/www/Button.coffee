@@ -1,5 +1,5 @@
 class Button
-	constructor: (@parent,@y,@x,@w,@h,@key,@txt) -> # sixties
+	constructor: (@parent,@x,@y,@w,@h,@key,@txt) -> # sixties
 		@w0=99
 		@h0=99
 
@@ -10,28 +10,18 @@ class Button
 		@x0 = g.x
 		@y0 = g.y
 
-		@w0 = g.s*width*@w/60-2
-		@h0 = g.s*height*@h/60-2
+		@w0 = g.s*width*@w/60
+		@h0 = g.s*height*@h/60
 
-		fill 255,127
-		rect 0, 0, height*@h/60-2,  width*@w/60-2
+		fc 1,1,1,0.5
+		rect 0, 0,  width*@w/60, height*@h/60
 
-		fill 0
-		textSize @h0/3
+		fc 0
+		textSize (@h0+@w0)/6
 		text @txt,0,0 
 		g.pop()
 
-	mousePressed : ->
-		if @x0-@w0/2 <= mouseX <= @x0+@w0/2 and @y0-@h0/2 <= mouseY <= @y0+@h0/2 
-			@parent.process @key
-		false
-
-	touchStarted : (x,y) ->
-		#touch = touches[touches.length-1]
-		if @x0-@w0/2 <= x <= @x0+@w0/2 and @y0-@h0/2 <= y <= @y0+@h0/2 
-			@parent.process @key
-		false
-
-	keyPressed : (key) ->
-		if @key == key
-			@parent.process @key
+	mousePressed : -> @parent.process(@key) if @x0-@w0/2 <= mouseX <= @x0+@w0/2 and @y0-@h0/2 <= mouseY <= @y0+@h0/2 
+	touchStarted : (x,y) -> @parent.process(@key) if @x0-@w0/2 <= x <= @x0+@w0/2 and @y0-@h0/2 <= y <= @y0+@h0/2 
+	keyPressed : (key) -> @parent.process(@key) if @key == key
+			

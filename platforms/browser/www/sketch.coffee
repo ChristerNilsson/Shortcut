@@ -1,7 +1,3 @@
-# This command compiles all files in the background:
-# coffee -b -o . -cw .
-# Sublime: Ctrl+Shift+p Install Package Better CoffeeScript
-
 g = 0
 ids = {}
 
@@ -14,7 +10,7 @@ class Game
 		@mode = 0                                                     
 		@players.push new Player "WASD",30,30, 60,60
 		@players.push new Player "&%('",90,30, 60,60
-		@display = new Button @, 0, 0, 15, 10, "",""
+		@display = new Button @, 0, -22, 8, 12, "",""
 	push : ->
 		@stack.push [@x,@y,@a,@s]
 		push()
@@ -40,9 +36,6 @@ class Game
 		if @mode == 0
 			autolevel()
 			@createProblem()
-		else
-			for player in @players
-				player.history.unshift player.score()
 
 	result : ->
 		fill 127
@@ -69,17 +62,15 @@ class Game
 
 	solve_result : ->
 		fill 0
-		H = 40
+		n = 20 
+		H = height / n
 		textSize H
-		solution = solve @players[0].history[1], @players[0].target
-		solution.unshift ""
+		solution = solve(@players[0].history[0], @players[0].target)
 
 		for number,i in solution
-			x0 = 0
-			n = (height-H)*0.9 / H
 			x = int i / n
 			y = int i % n
-			text number,x0+x*100,-(height-H)*0.9*0.5 + y*H		
+			text number, x*100, -8.5*H + y*H		
 
 	createProblem : ->
 		n = int Math.pow 2, 4+@level/3 # nodes
@@ -119,27 +110,21 @@ setup = ->
 	rectMode CENTER
 	g = new Game()
 	g.createProblem()		
+	xdraw()
 
-draw = ->
+xdraw = ->
 	g.push()
 	g.translate width/2, height/2	
 
 	for player,i in g.players
 		g.push()
-		if i==0
-			g.translate -width/4, 0
-			g.rotate 90
-		if i==1
-			g.translate width/4, 0
-			g.rotate -90
+		g.translate (2*i-1) * width/4, 0
 		player.draw()
 		g.pop()
-  if g.mode==1
-  	g.result()
-
+  g.result() if g.mode==1
 	g.display.draw()	
 	g.pop()
-
+	console.log "xdraw"
 
 touchStarted = -> 
 	for touch in touches
@@ -147,22 +132,21 @@ touchStarted = ->
 			ids[touch.id] = touch
 			for player in g.players
 				player.touchStarted(touch.x,touch.y)
-	if touch.length == 0
-		ids = {}
+	ids = {} if touch.length == 0
 	g.display.touchStarted(touch.x,touch.y)
+	xdraw()
 
 mousePressed = ->
-	for player in g.players
-		player.mousePressed()
+	player.mousePressed() for player in g.players
 	g.display.mousePressed()
-	draw()
+	xdraw()
 
 keyPressed = ->
-	for player in g.players
-		player.keyPressed key
+	player.keyPressed(key) for player in g.players
 	if key == ' ' 
 		autolevel()
 		g.createProblem()
+	xdraw()
 
 autolevel = ->
 	finished = 0
@@ -178,4 +162,4 @@ autolevel = ->
 		g.level--
 	if g.level == 0
 		g.level = 1
-	console.log("autolevel #{g.level}")		
+	console.log("auto #{g.level}")		

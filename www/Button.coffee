@@ -10,14 +10,14 @@ class Button
 		@x0 = g.x
 		@y0 = g.y
 
-		@w0 = g.s*width*@w/60-2
-		@h0 = g.s*height*@h/60-2
+		@w0 = g.s*width*@w/60
+		@h0 = g.s*height*@h/60
 
 		fc 1,1,1,0.5
-		rect 0, 0,  width*@w/60-2, height*@h/60-2
+		rect 0, 0,  width*@w/60, height*@h/60
 
 		fc 0
-		textSize @h0/3
+		textSize (@h0+@w0)/6
 		text @txt,0,0 
 		g.pop()
 

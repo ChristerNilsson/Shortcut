@@ -10,7 +10,7 @@ class Game
 		@mode = 0                                                     
 		@players.push new Player "WASD",30,30, 60,60
 		@players.push new Player "&%('",90,30, 60,60
-		@display = new Button @, 0, -28.5, 8, 3, "",""
+		@display = new Button @, 0, -22, 8, 12, "",""
 	push : ->
 		@stack.push [@x,@y,@a,@s]
 		push()
@@ -66,8 +66,6 @@ class Game
 		H = height / n
 		textSize H
 		solution = solve(@players[0].history[0], @players[0].target)
-		print solution
-		#solution.unshift @players[0].history[0]
 
 		for number,i in solution
 			x = int i / n

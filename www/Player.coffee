@@ -60,10 +60,16 @@ class Player
 	touchStarted : (x,y) -> button.touchStarted(x,y) for button in @buttons 
 	keyPressed : (key) -> button.keyPressed(key) for button in @buttons
 
-	score : -> ((@stopp - @start)/1000 + @count * 10).toFixed(3)
+	score : -> (@stopp - @start)/1000 + @count * 10 
 	top : -> @history[@history.length-1]
 	finished : -> @top() == @target		
 	perfect : (level) -> @finished() and @count <= level
+
+	digits = (x) ->
+		return x.toFixed(3) if x<100
+		return x.toFixed(2) if x<1000
+		return x.toFixed(1) if x<10000
+		return x.toFixed(0)
 
 	result :() ->
 		n = 20
@@ -78,7 +84,7 @@ class Player
 		else
 			x0 = width/8
 			dx = width/8
-		text @score(), x0, -9.5*H 
+		text digits(@score()), x0, -9.5*H 
 		for number,i in @history
 			x = int i / (n-1)
 			y = int i % (n-1)
