@@ -54,3 +54,5 @@ range = () ->
     return _.range arguments[0],arguments[1]
   else if n==3
     return _.range arguments[0],arguments[1],arguments[2]
+
+print = (s) -> console.log s
