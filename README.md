@@ -7,3 +7,4 @@ Every operation costs ten seconds.
 ## Usage
 
 Use the link above.
+Use WASD and arrow keys.
