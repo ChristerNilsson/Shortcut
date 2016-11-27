@@ -29,7 +29,7 @@ class Game
 		@y += @s * dy * cos(v) + @s * dx * sin(v)
 		translate dx,dy
 	dump : (txt) ->
-		console.log [txt, @x,@y]
+		print txt, @x,@y
 
 	process : ->
 		@mode = 1 - @mode
@@ -83,14 +83,14 @@ class Game
 				if item not in tree
 					lst2.push item
 					tree.push item
-		for j in [1..@level]
+		for j in range @level
 			lst2 = []
 			for item in lst
 				save item+2 
 				save item*2
 				save item/2
 			lst = lst2
-		i = int random 0,lst.length
+		i = int random lst.length
 		b = lst[i]
 
 		d = new Date()
@@ -124,7 +124,6 @@ xdraw = ->
   g.result() if g.mode==1
 	g.display.draw()	
 	g.pop()
-	console.log "xdraw"
 
 touchStarted = -> 
 	for touch in touches
@@ -162,4 +161,3 @@ autolevel = ->
 		g.level--
 	if g.level == 0
 		g.level = 1
-	console.log("auto #{g.level}")		
