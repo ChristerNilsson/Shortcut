@@ -16,7 +16,7 @@ class Player
 		@buttons.push new Button @, 10, -5, 7.5, 15, "","2"
 		@buttons.push new Button @,  0, -5, 7.5, 15, keys[0],"undo"
 		@buttons.push new Button @,-10, 15, 7.5, 15, keys[1],"/2"
-		@buttons.push new Button @,  0, 15, 7.5, 15, keys[2],"+3"
+		@buttons.push new Button @,  0, 15, 7.5, 15, keys[2],"+2"
 		@buttons.push new Button @, 10, 15, 7.5, 15, keys[3],"*2"
 
 	draw : ->
