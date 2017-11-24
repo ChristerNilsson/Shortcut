@@ -1,5 +1,6 @@
 g = 0
 ids = {}
+released = true
 
 class Game
 	constructor : (@x=0, @y=0, @a=0, @s=1, @stack=[]) ->
@@ -136,12 +137,18 @@ xdraw = ->
 # 	g.display.touchStarted(touch.x,touch.y)
 # 	xdraw()
 
+mouseReleased = ->
+	released = true
+	false
+
 touchStarted = -> 
 	player.mousePressed() for player in g.players
 	g.display.mousePressed()
 	xdraw()
 
 mousePressed = ->
+	if !released then return
+	released = false
 	player.mousePressed() for player in g.players
 	g.display.mousePressed()
 	xdraw()
