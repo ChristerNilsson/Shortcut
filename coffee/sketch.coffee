@@ -137,8 +137,8 @@ xdraw = ->
 # 	g.display.touchStarted(touch.x,touch.y)
 # 	xdraw()
 
-mouseReleased = ->
-	released = true
+mouseReleased = -> # to make Android work 
+	released = true 
 	false
 
 touchStarted = -> 
@@ -147,7 +147,7 @@ touchStarted = ->
 	xdraw()
 
 mousePressed = ->
-	if !released then return
+	if !released then return # to make Android work 
 	released = false
 	player.mousePressed() for player in g.players
 	g.display.mousePressed()

@@ -8,3 +8,10 @@
 
 - Use the link above.
 - Use WASD and arrow keys.
+
+Platforms:
+
+* Windows Yes
+* iOS Yes
+* Android Yes
+* OSX ?
