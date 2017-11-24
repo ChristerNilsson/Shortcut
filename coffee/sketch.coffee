@@ -124,6 +124,7 @@ xdraw = ->
   g.result() if g.mode==1
 	g.display.draw()	
 	g.pop()
+	false # to prevent double clock on Android
 
 touchStarted = -> 
 	for touch in touches
