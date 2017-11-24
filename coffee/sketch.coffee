@@ -126,14 +126,19 @@ xdraw = ->
 	g.pop()
 	false # to prevent double clock on Android
 
+# touchStarted = -> 
+# 	for touch in touches
+# 		if touch.id not of ids 
+# 			ids[touch.id] = touch
+# 			for player in g.players
+# 				player.touchStarted(touch.x,touch.y)
+# 	ids = {} if touch.length == 0
+# 	g.display.touchStarted(touch.x,touch.y)
+# 	xdraw()
+
 touchStarted = -> 
-	for touch in touches
-		if touch.id not of ids 
-			ids[touch.id] = touch
-			for player in g.players
-				player.touchStarted(touch.x,touch.y)
-	ids = {} if touch.length == 0
-	g.display.touchStarted(touch.x,touch.y)
+	player.mousePressed() for player in g.players
+	g.display.mousePressed()
 	xdraw()
 
 mousePressed = ->
