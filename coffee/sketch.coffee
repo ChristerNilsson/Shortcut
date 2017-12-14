@@ -122,7 +122,7 @@ xdraw = ->
 		g.translate (2*i-1) * width/4, 0
 		player.draw()
 		g.pop()
-  g.result() if g.mode==1
+	g.result() if g.mode==1
 	g.display.draw()	
 	g.pop()
 	false # to prevent double clock on Android
